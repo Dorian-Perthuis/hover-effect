@@ -1,0 +1,22 @@
+.hoverSquare{
+  position:relative;
+}
+
+.square{
+  position: absolute;
+  background-color: hsla(354,81%,72%,1);
+  z-index: -1;
+
+  //Value before hover
+  scale:0;
+  opacity: 0;
+}
+
+
+
+.hoverSquare:hover .square {
+
+  //Value after hover     //Don't forget to add your customs css properties to the function parameters
+  scale : 1.02;
+  opacity: 1;
+}
