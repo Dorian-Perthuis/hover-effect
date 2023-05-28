@@ -50,8 +50,9 @@ export class hoverMagnet{
       height: ${100 + this.magnetScale}%;
       width: ${100 + this.magnetScale}%;
       z-index: 1;
+      pointer-events:none;
     `;
-    this;this.magnetCatcher.style.transition = "transform 100ms ease";
+    this.magnetCatcher.style.transition = "transform 100ms ease";
     let rect : DOMRect = this.magnetCatcher.getBoundingClientRect();
     this.magnetCenter = {x : (rect.width/2), y : (rect.height/2)};
     

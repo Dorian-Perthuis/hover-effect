@@ -1,54 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./src/style.scss">
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./src/style.scss" />
   <title>Hover Galery</title>
 </head>
-  <body>
-    <div class="background">
-      <div class="first rect"></div>
-      <div class="second rect"></div>
-      <div class="third rect"></div>
+
+<body>
+  <div class="background">
+    <div class="first rect"></div>
+    <div class="second rect"></div>
+    <div class="third rect"></div>
+  </div>
+  <section class="galery">
+    <div id="effects" class="card">
+      <button id="spread" class="effectBtn">Spread</button>
+      <button id="rectangle" class="effectBtn hoverScale">Rectangle</button>
+      <button id="square" class="effectBtn hoverSquare">Square</button>
+      <button id="magnet" class="effectBtn">Magnet</button>
     </div>
-    <section  class="galery">
-      <div class="card">
-        <div id="hoverSpread" class="button">
-          Hover me !
-        </div> 
-      </div>
-      <div class="card">
-        <div id="hoverScales" class="hoverScale button">
-          <span>Hover me !</span>
-        </div>
-      </div>
-      <div class="card">
-        <div id="hoverSquares" class="hoverSquare button">
-          <span>Hover me !</span>
-        </div>
-      </div>
-    
-      <div class="card">
-        <div id="hoverMagnet" class= "button">
-          <span>Hover me !</span>
-        </div>
-      </div>
 
-      <div class="card">
-        <div id="hoverbubble" class= "button">
-          <span>Hover me !</span>
-        </div>
-      </div>
+    <div id="options" class="card">
+      <div id="spreadOption" class="option">
+        <form>
+          <div>
+            <input type="checkbox" name="active" />
+            <label for="active">Active</label>
+          </div>
+          <input type="number" placeholder="Vitesse" />
+          <div>
+            <input type="color" value="#454545" name="hoverColor" />
+            <label for="hoverColor">Hover Color</label>
+          </div>
 
-      <div class="card">
-        <div id="hoverSqueeze" class= "button">
-          <span>Hover me !</span>
-        </div>
+          <fieldset>
+            <legend>Bezier curve points</legend>
+            <div class="decimal">
+              <label for="x1">X1</label><input name="x1"/>
+            </div>
+            <div class="decimal">
+              <label for="y1">Y1</label><input name="y1"/>
+            </div>
+            <div class="decimal">
+              <label for="x2">X2</label><input name="x2"/>
+            </div>
+            <div class="decimal">
+              <label for="y2">Y2</label><input name="y2"/>
+            </div>
+          </fieldset>
+        </form>
       </div>
+      <div id="rectangleOption" class="option"></div>
+      <div id="squareOption" class="option">square</div>
+      <div id="magnetOption" class="option">magnet</div>
+    </div>
 
-    </section>
-    <script type="module" src="./src/main.ts"></script>
-  </body>
+    <div id="hover-container" class="card">
+      <div class="hoverElement">hover me !</div>
+    </div>
+  </section>
+  <script type="module" src="./src/main.ts"></script>
+</body>
+
 </html>
