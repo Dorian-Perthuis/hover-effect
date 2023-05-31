@@ -5,7 +5,7 @@ import { getMouseRelativePosition } from "../utils/mouseLib";
 
 export class hoverSpread{
   //Attributs
-  element : HTMLElement;
+  element! : HTMLElement;
   start : DOMHighResTimeStamp |undefined;
   previousTimeStamp : DOMHighResTimeStamp | undefined;
   done = false;
@@ -13,25 +13,33 @@ export class hoverSpread{
   leavePoint : relativePoint = {x:0, y:0};
   isEnterAnim :boolean = false;
   isLeaveAnim :boolean = false;
-  timeFunction : bezier.EasingFunction;
+  timeFunction! : bezier.EasingFunction;
+  mouseEnterBinding: ((e:MouseEvent) => void) | undefined;
+  mouseLeaveBinding: ((e:MouseEvent) => void) | undefined;
 
-  //Settings
-  speed: number;
-  color : string;
-  bezierPoints : bezierPoints;
+  //Params
+  speed: number = 0.30;
+  color : string = "hsla(354,81%,72%,1)";
+  bezierPoints : bezierPoints = {x1:0,y1:0,x2:1,y2:1};
 
   
   //Constructor
-  constructor(element:HTMLElement,params:params|undefined = undefined){
-    this.element = element;
-    this.speed = params===undefined ? 0.30 : (params!.speed ?? 0.30);
-    this.color = params===undefined ? "hsla(354,81%,72%,1)" : (params!.color ?? "hsla(354,81%,72%,1)");
-    this.bezierPoints = params===undefined ? {x1:0,y1:0,x2:1,y2:1} : (params.bezier ?? {x1:0,y1:0,x2:1,y2:1});
-    this.timeFunction = bezier(this.bezierPoints.x1, this.bezierPoints.y1, this.bezierPoints.x2, this.bezierPoints.y2);
+  constructor(element:HTMLElement|undefined = undefined,params:params|undefined = undefined){
+    if(params){
+      this.speed = params.speed || this.speed;
+      this.color = params.color || this.color;
+      
+      if(params.bezier){
+        this.bezierPoints.x1 = params.bezier.x1 || this.bezierPoints.x1;
+        this.bezierPoints.x2 = params.bezier.x2 || this.bezierPoints.x2;
+        this.bezierPoints.y1 = params.bezier.y1 || this.bezierPoints.y1;
+        this.bezierPoints.y2 = params.bezier.y2 || this.bezierPoints.y2;
+      }
+    }
 
-    //Event listener
-    element.addEventListener("mouseenter",this.mouseEnter.bind(this));
-    element.addEventListener("mouseleave",this.mouseLeave.bind(this));
+    if(element){
+      this.addOn(element);
+    }
   }
 
   //Methodes
@@ -127,6 +135,42 @@ export class hoverSpread{
     this.isLeaveAnim = false;
   }
   //------------------------------------
+  //Buiding function
+  setSpeed(speed:number){
+    this.speed = speed || this.speed;
+    return this;
+  }
+  setHoverColor(color:string){
+    this.color = color || this.color;
+    return this;
+  }
+  setBezierPoints(points:bezierPoints){
+    if(points){
+      this.bezierPoints.x1 = points.x1 || this.bezierPoints.x1;
+      this.bezierPoints.x2 = points.x2 || this.bezierPoints.x2;
+      this.bezierPoints.y1 = points.y1 || this.bezierPoints.y1;
+      this.bezierPoints.y2 = points.y2 || this.bezierPoints.y2;
+    }
+    return this;
+  }
+
+  addOn(element:HTMLElement){
+      this.element = element;
+      this.timeFunction = bezier(this.bezierPoints.x1, this.bezierPoints.y1, this.bezierPoints.x2, this.bezierPoints.y2);
+      this.mouseEnterBinding = this.mouseEnter.bind(this);
+      this.mouseLeaveBinding = this.mouseLeave.bind(this);
+      element.addEventListener("mouseenter",this.mouseEnterBinding);
+      element.addEventListener("mouseleave",this.mouseLeaveBinding);
+      return this;
+  }
+
+  removeFrom(element:HTMLElement){
+    if(this.element == element){
+      element.removeEventListener("mouseenter", this.mouseEnterBinding!);
+      element.removeEventListener("mouseleave", this.mouseLeaveBinding!);
+    }
+    return this;
+  }
 }
 
 interface params{

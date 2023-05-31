@@ -5,43 +5,38 @@
 */
 
 
-
-
 export class hoverSquares{
   //attributs 
-  element : HTMLElement;
-  strTransition:string;
-  squareLenght : number;
-  nbSquareByColumns : number;
+  element! : HTMLElement;
+  strTransition!:string;
+  squareLenght! : number;
+  nbSquareByColumns! : number;
 
   //Settings
-  nbSquareByLines:number;
-  spreadOrientation: number;
-  delay:number;
-  cssProperties: Array<String>;
-  defaultCssPorperties = ["scale 350ms ease", "opacity 350ms ease", "border-radius 350ms ease"];
+  nbSquareByLines:number = 5;
+  spreadOrientation: number = 5;
+  delay:number = 50;
+  cssProperties: Array<String> = ["scale 350ms ease", "opacity 350ms ease", "border-radius 350ms ease"];
   
 
-  constructor(element:HTMLElement, params : params|undefined = undefined){
-    this.element = element;
+  constructor(element?:HTMLElement|undefined, params : params|undefined = undefined){
+    if(params){
+      this.nbSquareByLines = params.nbSquaresByLines || this.nbSquareByLines;
+      this.spreadOrientation = params.spreadOrientation || this.spreadOrientation;
+      this.spreadOrientation %= 360;
+      this.delay = params.delay || this.delay;
+      this.cssProperties = params.cssPropertiesAnimated || this.cssProperties;
+    }
 
-    this.nbSquareByLines = params===undefined ? 5 : (params!.nbSquaresByLines ?? 5);
-    this.spreadOrientation = params===undefined ? 0 : (params!.spreadOrientation ?? 0);
-    this.delay = params===undefined ? 50 : (params!.delay ?? 50);
-    this.cssProperties = params==undefined ? this.defaultCssPorperties : (params!.cssPropertiesAnimated ?? this.defaultCssPorperties);
+    
+    if(element){
+      this.linkTo(element);
+    }
 
-    this.spreadOrientation = this.spreadOrientation%360;
-
-    this.squareLenght = 100/this.nbSquareByLines;           
-    this.nbSquareByColumns = this.element.clientHeight/(this.element.clientWidth*(this.squareLenght*0.01));
-
-
-    this.forceStyle();
-    this.strTransition = this.createStrTransition();
-    this.createScales();
   }
 
   private forceStyle(){
+    this.element.classList.add("hoverSquare");
     this.element.style.position = "relative";
     this.element.style.overflow = "hidden";
     this.element.style.display = "flex";
@@ -100,7 +95,47 @@ export class hoverSquares{
       }
     }
   }
+  //Buiding methods
 
+  setNbSquaresByLines(nb:number){
+    this.nbSquareByLines = nb || this.nbSquareByLines;
+    return this;
+  }
+
+  setSpreadOrientation(degre:number){
+    this.spreadOrientation = degre%360 || this.spreadOrientation;
+    return this;
+  }
+
+  setDelay(delay:number){
+    this.delay = delay || this.delay;
+    return this;
+  }
+
+  setCssProperties(transitions:Array<string>){
+    this.cssProperties = transitions[0] === '' ? this.cssProperties : transitions ;
+    return this;
+  }
+
+  linkTo(element:HTMLElement){
+    this.element = element;
+    this.squareLenght = 100/this.nbSquareByLines;           
+    this.nbSquareByColumns = this.element.clientHeight/(this.element.clientWidth*(this.squareLenght*0.01));
+    this.forceStyle();
+    this.strTransition = this.createStrTransition();
+    this.createScales();
+    return this;
+  }
+
+  removeFrom(element:HTMLElement){
+    if(this.element == element){
+      Array.from(element.getElementsByClassName("square")).forEach((e) => {
+        e.remove();
+      });
+      element.classList.remove("hoverSquare"); 
+    }
+    return this;
+  }
 }
 
 interface params{

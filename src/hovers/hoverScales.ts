@@ -7,43 +7,40 @@
   If you want to use them you need write them down in the parameters.
 */
 
-
-
-
 export class hoverScale{
   //attributs 
-  element : HTMLElement;
-  strTransition:string;
+  element! : HTMLElement;
+  strTransition!:string;
 
   //Settings
-  nbColumns:number;
-  nbLines:number;
-  spreadOrientation: number;
-  delay:number;
-  cssProperties: Array<String>;
-  defaultCssPorperties = ["scale 350ms ease", "opacity 350ms ease", "border-radius 350ms ease"];
+  nbColumns:number = 5;
+  nbLines:number = 5;
+  spreadOrientation: number = 0;
+  delay:number = 50;
+  cssProperties: Array<String> = ["scale 350ms ease", "opacity 350ms ease", "border-radius 350ms ease"];
   
 
-  constructor(element:HTMLElement, params : params|undefined = undefined){
-    this.element = element;
+  constructor(element:HTMLElement|undefined = undefined, params : params|undefined = undefined){
 
-    this.nbLines = params===undefined ? 5 : (params!.nbLines ?? 5);
-    this.nbColumns = params===undefined ? 5 : (params!.nbColumns ?? 5);
-    this.spreadOrientation = params===undefined ? 0 : (params!.spreadOrientation ?? 0);
-    this.delay = params===undefined ? 50 : (params!.delay ?? 50);
-    this.cssProperties = params==undefined ? this.defaultCssPorperties : (params!.cssPropertiesAnimated ?? this.defaultCssPorperties);
+    if(params){
+      this.nbLines = params.nbLines || this.nbLines;
+      this.nbColumns = params.nbColumns || this.nbColumns;
+      this.spreadOrientation = params.spreadOrientation || this.spreadOrientation;
+      this.spreadOrientation %= 360;
+      this.delay = params.delay || this.delay;
+      this.cssProperties = params.cssPropertiesAnimated || this.cssProperties;
+    }
 
-    this.spreadOrientation = this.spreadOrientation%360;
-
-    this.forceStyle();
-    this.strTransition = this.createStrTransition();
-    this.createScales();
+    if(element){
+      this.linkTo(element);
+    }
   }
 
   private forceStyle(){
     this.element.style.position = "relative";
     this.element.style.overflow = "hidden";
     this.element.style.display = "flex";
+    this.element.classList.add("hoverScale");
   }
 
   //Return a string with all css transition properties and a place for the delay parameter.
@@ -88,6 +85,7 @@ export class hoverScale{
           left: ${scaleWidth*j}%;
           height: ${scaleHeight}%;
           width: ${scaleWidth}%;
+          pointer-events:none;
           transform-origin: 0 0;
           transform: translateX(-50%) translateY(-50%);
           transition: ${this.strTransition.replaceAll("%delay", "" + delay)};
@@ -97,6 +95,47 @@ export class hoverScale{
     }
   }
 
+  //Building methods
+  setNbLines(nb:number){
+    this.nbLines = nb || this.nbLines;
+    return this;
+  }
+  setNbColumns(nb:number){
+    this.nbColumns = nb || this.nbLines;
+    return this;
+  }
+  setDelay(delay:number){
+    this.delay = delay || this.delay;
+    return this;
+  }
+  setSpreadOrientation(degre:number){
+    this.spreadOrientation = degre || this.spreadOrientation;
+    this.spreadOrientation %= 360;
+    return this;
+  }
+
+  setCssProperties(transitions:Array<string>){
+    this.cssProperties = transitions[0] === '' ?  this.cssProperties : transitions ;
+    return this;
+  }
+
+  linkTo(element:HTMLElement){
+    this.element = element;
+    this.forceStyle();
+    this.strTransition = this.createStrTransition();
+    this.createScales();
+    return this;
+  }
+
+  removeFrom(element:HTMLElement){
+    if(this.element == element){
+      Array.from(element.getElementsByClassName("scale")).forEach((e) => {
+        e.remove();
+      });
+      element.classList.remove("hoverScale"); 
+    }
+    return this;
+  }
 }
 
 interface params{

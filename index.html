@@ -25,41 +25,117 @@
 
     <div id="options" class="card">
       <div id="spreadOption" class="option">
+        <form name="spreadForm">
+          <div>
+            <input type="checkbox" name="active" />
+            <label for="active">Active</label>
+          </div>
+          <div class="input-container">
+            <label for="speed">Speed</label>
+            <input type="number" placeholder="0.3" name="speed" />
+          </div>
+          <div>
+            <input type="color" value="#f17e89" name="hoverColor" />
+            <label for="hoverColor">Hover Color</label>
+          </div>
+
+          <fieldset name="bezierPoints">
+            <legend>Bezier curve points</legend>
+            <div class="decimal">
+              <label for="x1">X1</label><input name="x1" placeholder="0"/>
+            </div>
+            <div class="decimal">
+              <label for="y1">Y1</label><input name="y1" placeholder="0"/>
+            </div>
+            <div class="decimal">
+              <label for="x2">X2</label><input name="x2" placeholder="1"/>
+            </div>
+            <div class="decimal">
+              <label for="y2">Y2</label><input name="y2" placeholder="1"/>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+      <div id="rectangleOption" class="option">
+        <form name="rectangleForm">
+          <div>
+            <input type="checkbox" name="active" />
+            <label for="active">Active</label>
+          </div>
+          <div class="input-container">
+            <label for="nbLines">Number of Lines</label>
+            <input type="number" placeholder="3" name="nbLines" />
+          </div>
+          <div class="input-container">
+            <label for="nbColumns">Number of Columns</label>
+            <input type="number" placeholder="3" name="nbColumns" />
+          </div>
+          <div class="input-container">
+            <label for="orientation">Orientation (°)</label>
+            <input type="number" placeholder="120" name="orientation" />
+          </div>
+          <div class="input-container">
+            <label for="delay">Delay (ms)</label>
+            <input type="number" placeholder="50" name="delay" />
+          </div>
+          <div class="input-container textarea-container">
+            <label for="transitions">Transitions</label>
+            <textarea name="transitions" placeholder='scale 350ms ease &#10;opacity 350ms ease &#10;border-radius 350ms ease'></textarea>
+          </div>
+        </form>
+
+      </div>
+
+      <div id="squareOption" class="option">
+        <form name="squareForm">
+          <div>
+            <input type="checkbox" name="active" />
+            <label for="active">Active</label>
+          </div>
+          <div class="input-container">
+            <label for="nbSquaresByLine">Number of Square By Line</label>
+            <input type="number" placeholder="5" name="nbSquaresByLine" />
+          </div>
+          <div class="input-container">
+            <label for="orientation">Orientation (°)</label>
+            <input type="number" placeholder="120" name="orientation" />
+          </div>
+          <div class="input-container">
+            <label for="delay">Delay (ms)</label>
+            <input type="number" placeholder="50" name="delay" />
+          </div>
+          <div class="input-container textarea-container">
+            <label for="transitions">Transitions</label>
+            <textarea name="transitions" placeholder='scale 350ms ease &#10;opacity 350ms ease &#10;border-radius 350ms ease'></textarea>
+          </div>
+        </form>
+        
+      </div>
+      <div id="magnetOption" class="option">
         <form>
           <div>
             <input type="checkbox" name="active" />
             <label for="active">Active</label>
           </div>
-          <input type="number" placeholder="Vitesse" />
-          <div>
-            <input type="color" value="#454545" name="hoverColor" />
-            <label for="hoverColor">Hover Color</label>
+          <div class="input-container">
+            <label for="force">Force</label>
+            <input type="number" placeholder="0.05" name="force" />
           </div>
-
-          <fieldset>
-            <legend>Bezier curve points</legend>
-            <div class="decimal">
-              <label for="x1">X1</label><input name="x1"/>
-            </div>
-            <div class="decimal">
-              <label for="y1">Y1</label><input name="y1"/>
-            </div>
-            <div class="decimal">
-              <label for="x2">X2</label><input name="x2"/>
-            </div>
-            <div class="decimal">
-              <label for="y2">Y2</label><input name="y2"/>
-            </div>
-          </fieldset>
+          <div class="input-container">
+            <label for="magnetScale">Magnet Scale (%)</label>
+            <input type="number" placeholder="50" name="magnetScale" />
+          </div>
+          <div>
+            <input type="checkbox" name="inverted" />
+            <label for="inverted">Inverted</label>
+          </div>
         </form>
       </div>
-      <div id="rectangleOption" class="option"></div>
-      <div id="squareOption" class="option">square</div>
-      <div id="magnetOption" class="option">magnet</div>
     </div>
 
     <div id="hover-container" class="card">
       <div class="hoverElement">hover me !</div>
+      
     </div>
   </section>
   <script type="module" src="./src/main.ts"></script>

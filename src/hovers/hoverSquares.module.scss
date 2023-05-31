@@ -1,5 +1,6 @@
 .hoverSquare{
   position:relative;
+  isolation: isolate;
 }
 
 .square{
@@ -10,6 +11,7 @@
   //Value before hover
   scale:0;
   opacity: 0;
+  border-radius: 50%;
 }
 
 
@@ -17,6 +19,7 @@
 .hoverSquare:hover .square {
 
   //Value after hover     //Don't forget to add your customs css properties to the function parameters
-  scale : 1.02;
+  scale : 1.05;
   opacity: 1;
+  
 }

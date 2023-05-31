@@ -28,17 +28,19 @@ export class hoverMagnet{
 
     this.magnetScale = params===undefined ? 50 : (params!.magnetScale ?? 50);
     this.force = params===undefined ? 0.05 : (params!.force ?? 0.05);
+    this.force = Math.abs(this.force);
     this.inverted = params === undefined ? false : (params!.inverted ?? false);
     
+
     this.forceElementStyle();
     this.initMagnetCatcher();
   }
 
   private forceElementStyle(){
     this.element.style.position = "relative";
-    this.element.style.isolation = "isolate";
     this.element.style.transformStyle = "preserve-3d";
     this.element.style.transition = "transform 100ms ease";
+    this.element.style.zIndex = "100";
   }
 
   private initMagnetCatcher(){
@@ -49,8 +51,7 @@ export class hoverMagnet{
       position: absolute;
       height: ${100 + this.magnetScale}%;
       width: ${100 + this.magnetScale}%;
-      z-index: 1;
-      pointer-events:none;
+      z-index: -1;
     `;
     this.magnetCatcher.style.transition = "transform 100ms ease";
     let rect : DOMRect = this.magnetCatcher.getBoundingClientRect();

@@ -1,29 +1,9 @@
-/*
-import { hoverBubble } from "./hovers/hoverBubble";
 import { hoverMagnet } from "./hovers/hoverMagnet";
 import { hoverScale } from "./hovers/hoverScales";
 import { hoverSpread } from "./hovers/hoverSpread";
 import { hoverSquares } from "./hovers/hoverSquares";
 
-let buttonSpread = document.getElementById("hoverSpread")!;
-let buttonScale = document.getElementById("hoverScales")!;
-let buttonSquare = document.getElementById("hoverSquares")!;
-let buttonMagnet = document.getElementById("hoverMagnet")!;
-let buttonBubble = document.getElementById("hoverbubble")!;
-let buttonSqueeze = document.getElementById("hoverSqueeze")!;
-
-new hoverSpread(buttonSpread);
-new hoverScale(buttonScale, {delay :35, spreadOrientation:125,nbLines:4 , nbColumns:7});
-new hoverSquares(buttonSquare, {delay:35, spreadOrientation: 0, nbSquaresByLines:15});
-new hoverMagnet(buttonMagnet, {magnetScale:200, force:0.08});
-new hoverMagnet(buttonBubble, {magnetScale:200, force:0.08});
-new hoverBubble(buttonBubble, {startPoint:{x:-25,y:50}, endPoint:{x:125,y:50}, speed:0.4,  startDelay:50});
-new hoverBubble(buttonBubble, {startPoint:{x:-25,y:50}, endPoint:{x:125,y:50}, speed:0.4, color:"rgba(0,0,0,0.25)", zIndex:-2,  endDelay:50});
-*/
-import { hoverMagnet } from "./hovers/hoverMagnet";
-import { hoverScale } from "./hovers/hoverScales";
-import { hoverSpread } from "./hovers/hoverSpread";
-import { hoverSquares } from "./hovers/hoverSquares";
+const hoverElement:HTMLElement = document.querySelector(".hoverElement")!;
 
 let buttonSpread = document.getElementById("spread")!;
 let buttonRectangle = document.getElementById("rectangle")!;
@@ -31,7 +11,7 @@ let buttonSquare = document.getElementById("square")!;
 let buttonMagnet = document.getElementById("magnet")!;
 
 new hoverSpread(buttonSpread);
-new hoverScale(buttonRectangle, {delay :35, spreadOrientation:125,nbLines:4 , nbColumns:7});
+new hoverScale(buttonRectangle,{delay :35, spreadOrientation:125,nbLines:4 , nbColumns:7});
 new hoverSquares(buttonSquare, {delay:35, spreadOrientation: 0, nbSquaresByLines:15});
 new hoverMagnet(buttonMagnet, {magnetScale:200, force:0.08});
 
@@ -57,6 +37,73 @@ Array.from(effectBtns).forEach(btn => {
 });
 
 
+//All forms
+const spreadForm:HTMLFormElement = document.querySelector('form[name="spreadForm"]')!;
+const rectangleForm:HTMLFormElement = document.querySelector('form[name="rectangleForm"]')!;
+const squareForm:HTMLFormElement = document.querySelector('form[name="squareForm"]')!;
+const magnetForm:HTMLFormElement = document.querySelector('form[name="magnetForm"]')!;
+
+//------------Forms' Logic-------------
+//------Spread Form
+const spreadHoverBuilder = new hoverSpread();
+const spreadCheckox:HTMLInputElement = <HTMLInputElement>spreadForm.elements.namedItem("active")!;
+
+spreadCheckox.addEventListener("change", () => {
+    if(spreadCheckox.checked){
+        let bezier = {
+            x1:(<HTMLInputElement>(<HTMLFieldSetElement>spreadForm.elements.namedItem("bezierPoints")).elements.namedItem("x1")).valueAsNumber,
+            y1:(<HTMLInputElement>(<HTMLFieldSetElement>spreadForm.elements.namedItem("bezierPoints")).elements.namedItem("y1")).valueAsNumber,
+            x2:(<HTMLInputElement>(<HTMLFieldSetElement>spreadForm.elements.namedItem("bezierPoints")).elements.namedItem("x2")).valueAsNumber,
+            y2:(<HTMLInputElement>(<HTMLFieldSetElement>spreadForm.elements.namedItem("bezierPoints")).elements.namedItem("y2")).valueAsNumber
+        };
+        spreadHoverBuilder
+            .setSpeed((<HTMLInputElement>spreadForm.elements.namedItem("speed")).valueAsNumber)
+            .setHoverColor((<HTMLInputElement>spreadForm.elements.namedItem("hoverColor")).value)
+            .setBezierPoints(bezier)
+            .addOn(hoverElement);
+    }else{
+        spreadHoverBuilder.removeFrom(hoverElement);
+    }
+});
+
+//------Rectangle Form
+const rectangleHoverBuilder = new hoverScale();
+const rectangleCheckox:HTMLInputElement = <HTMLInputElement>rectangleForm.elements.namedItem("active")!;
+
+rectangleCheckox.addEventListener("change", () => {
+    if(rectangleCheckox.checked){
+        let transitions:Array<string> = (<HTMLInputElement>rectangleForm.elements.namedItem("transitions")).value.split('\n');
+        rectangleHoverBuilder
+            .setNbLines((<HTMLInputElement>rectangleForm.elements.namedItem("nbLines")).valueAsNumber)
+            .setNbColumns((<HTMLInputElement>rectangleForm.elements.namedItem("nbColumns")).valueAsNumber)
+            .setDelay((<HTMLInputElement>rectangleForm.elements.namedItem("delay")).valueAsNumber)
+            .setSpreadOrientation((<HTMLInputElement>rectangleForm.elements.namedItem("orientation")).valueAsNumber)
+            .setCssProperties(transitions)
+            .linkTo(hoverElement);
+    }else{
+        rectangleHoverBuilder.removeFrom(hoverElement);
+    }
+});
+
+//------Square Form
+const squareHoverBuilder = new hoverSquares();
+const squareCheckox:HTMLInputElement = <HTMLInputElement>squareForm.elements.namedItem("active")!;
+
+squareCheckox.addEventListener("change", () => {
+    if(squareCheckox.checked){
+        let transitions:Array<string> = (<HTMLInputElement>squareForm.elements.namedItem("transitions")).value.split('\n');
+
+        squareHoverBuilder
+            .setNbSquaresByLines((<HTMLInputElement>squareForm.elements.namedItem("nbSquaresByLine")).valueAsNumber)
+            .setDelay((<HTMLInputElement>squareForm.elements.namedItem("delay")).valueAsNumber)
+            .setSpreadOrientation((<HTMLInputElement>squareForm.elements.namedItem("orientation")).valueAsNumber)
+            .setCssProperties(transitions)
+            .linkTo(hoverElement);
+
+    }else{
+        squareHoverBuilder.removeFrom(hoverElement);
+    }
+});
 
 
 /*
